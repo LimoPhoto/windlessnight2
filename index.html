@@ -244,7 +244,32 @@
             pageDots: false,
             prevNextButtons: true
         });
+         // 使用 window.matchMedia 判断是否为移动设备（宽度小于768px）
+        const isMobileDevice = window.matchMedia("(max-width: 768px)").matches;
 
+        if (isMobileDevice) {
+            // 为每个图片添加单击放大功能（仅在移动端）
+            const images = document.querySelectorAll('.carousel-cell img');
+            images.forEach((img) => {
+                img.addEventListener('click', () => {
+                    // 创建全屏覆盖层
+                    const overlay = document.createElement('div');
+                    overlay.classList.add('fullscreen-overlay');
+
+                    // 创建一个新的图片元素
+                    const fullImg = document.createElement('img');
+                    fullImg.src = img.src;
+                    overlay.appendChild(fullImg);
+
+                    // 点击覆盖层关闭
+                    overlay.addEventListener('click', () => {
+                        document.body.removeChild(overlay);
+                    });
+
+                    document.body.appendChild(overlay);
+                });
+            });
+        }
         // 进度条动态更新
         const progressBar = document.querySelector('.progress-bar .progress');
         flkty.on('scroll', function(progress) {
